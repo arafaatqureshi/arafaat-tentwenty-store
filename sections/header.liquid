@@ -222,7 +222,7 @@
         </h1>
       {%- endif -%}
     {%- endif -%}
-
+    {%  if section.settings.header_right_buttons == 'account_buttons' %}
     <div class="header__icons{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header__icons--localization header-localization{% endif %}">
       <div class="desktop-localization-wrapper">
         {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
@@ -302,6 +302,14 @@
         {%- endif -%}
       </a>
     </div>
+    {% elsif section.settings.header_right_buttons == 'contact_button' %}
+    <div class="header__icons">
+      <a href="{{ section.settings.contact_button_link | default: '/pages/contact' }}" class="header__contact-button link focus-inset">
+        <span class="header__contact-button-text">{{ section.settings.contact_button_label | default: 'Contact us' }}</span>
+        <span class="header__contact-button-arrow">→</span>
+      </a>
+    </div>
+    {%- endif -%}
   </header>
 </{{ header_tag }}>
 
@@ -496,6 +504,35 @@
       "default": "middle-left",
       "label": "t:sections.header.settings.logo_position.label",
       "info": "t:sections.header.settings.logo_help.content"
+    },
+    {
+      "type": "select",
+      "id": "header_right_buttons",
+      "options": [
+        {
+          "value": "account_buttons",
+          "label": "Account buttons"
+        },
+        {
+          "value": "contact_button",
+          "label": "Contact Button"
+        }     
+      ],
+      "default": "contact_button",
+      "label": "Header Right Content Options",
+      "info": "Account buttons or Contact Button"
+    },
+    {
+      "type": "text",
+      "id": "contact_button_label",
+      "default": "Contact us",
+      "label": "Contact button label"
+    },
+    {
+      "type": "url",
+      "id": "contact_button_link",
+      "label": "Contact button link",
+      "default": "/"
     },
     {
       "type": "select",

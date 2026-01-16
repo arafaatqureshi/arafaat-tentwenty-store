@@ -2343,11 +2343,11 @@ input[type='checkbox'] {
 .header-wrapper {
   display: block;
   position: relative;
-  background-color: rgb(var(--color-background));
+  background-color: transparent;
 }
 
 .header-wrapper--border-bottom {
-  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  border-bottom: 0;
 }
 
 .header {
@@ -2355,6 +2355,13 @@ input[type='checkbox'] {
   grid-template-areas: 'left-icons heading icons';
   grid-template-columns: 1fr 2fr 1fr;
   align-items: center;
+  position: absolute;
+  background-color: rgb(var(--color-background));
+  width: calc(100% - 40px);
+  max-width: 1400px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 21px;
 }
 
 @media screen and (max-width: 749px) {
@@ -2422,6 +2429,7 @@ input[type='checkbox'] {
 .header__heading {
   margin: 0;
   line-height: 0;
+  display: none;
 }
 
 .header > .header__heading-link {
@@ -2508,6 +2516,49 @@ input[type='checkbox'] {
   grid-area: icons;
   justify-self: end;
   padding-right: 0.8rem;
+}
+
+.header__contact-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #000000;
+  padding: 0.8rem 1.6rem;
+  text-decoration: none;
+  background: transparent;
+  color: #000000;
+  font-size: 1.6rem;
+  font-weight: 400;
+  transition: all 0.2s ease;
+}
+
+.header__contact-button:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.header__contact-button-text {
+  display: inline-block;
+}
+
+.header__contact-button-arrow {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+@media screen and (max-width: 750px) {
+  .header__contact-button {
+    width: 163px;
+    height: 36px;
+  }
+  .header {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0px;
+    padding: 21px 0px 24px 27.6px ;
+  }
 }
 
 .header__icons .shopify-app-block {

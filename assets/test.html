@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Split Exit - Data Attribute Driven</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .container { text-align: center; }
+
+        /* Split Effect Core CSS */
+        .split-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .split-part {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 50.5%;
+            overflow: hidden;
+            background-repeat: no-repeat;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s ease;
+        }
+
+        .split-top { top: 0; background-position: top; }
+        .split-bottom { bottom: 0; background-position: bottom; }
+
+        /* Exit Animations */
+        .split-top.exit { transform: translateY(-100%); opacity: 0; }
+        .split-bottom.exit { transform: translateY(100%); opacity: 0; }
+
+        [data-trigger-split] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        [data-trigger-split]:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Split Exit Animation</h2>
+        
+        <img id="targetImg" 
+             src="https://picsum.photos/600/400" 
+             data-split-exit 
+             width="600" 
+             height="400" 
+             alt="Test Image">
+        
+        <br>
+        
+        <button data-trigger-split="#targetImg">
+            Trigger Split Effect
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            // Check if clicked element has the trigger attribute
+            const trigger = e.target.closest('[data-trigger-split]');
+            if (!trigger) return;
+
+            const targetSelector = trigger.getAttribute('data-trigger-split');
+            const img = document.querySelector(targetSelector);
+
+            if (!img) return;
+
+            // Reset logic for testing
+            if (img.style.visibility === 'hidden') {
+                window.location.reload();
+                return;
+            }
+
+            triggerSplitExit(img);
+        });
+
+        function triggerSplitExit(imgElement) {
+            // Only proceed if the target has the specific data attribute
+            if (imgElement.dataset.splitExit === undefined) return;
+
+            const width = imgElement.clientWidth;
+            const height = imgElement.clientHeight;
+            const src = imgElement.src;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'split-wrapper';
+            wrapper.style.width = width + 'px';
+            wrapper.style.height = height + 'px';
+
+            const topHalf = document.createElement('div');
+            topHalf.className = 'split-part split-top';
+            topHalf.style.backgroundImage = `url(${src})`;
+            topHalf.style.backgroundSize = `${width}px ${height}px`;
+
+            const bottomHalf = document.createElement('div');
+            bottomHalf.className = 'split-part split-bottom';
+            bottomHalf.style.backgroundImage = `url(${src})`;
+            bottomHalf.style.backgroundSize = `${width}px ${height}px`;
+
+            wrapper.appendChild(topHalf);
+            wrapper.appendChild(bottomHalf);
+            
+            imgElement.parentNode.insertBefore(wrapper, imgElement);
+            imgElement.style.visibility = 'hidden';
+            imgElement.style.position = 'absolute';
+
+            setTimeout(() => {
+                topHalf.classList.add('exit');
+                bottomHalf.classList.add('exit');
+            }, 50);
+
+            setTimeout(() => {
+                wrapper.remove();
+            }, 850);
+        }
+    </script>
+
+</body>
+</html>
