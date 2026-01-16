@@ -1,0 +1,207 @@
+/* Root */
+hero-farms {
+  position: relative;
+  display: block;
+  height: 100vh;
+  max-height: 900px;
+  overflow: hidden;
+  color: #ffffff;
+  background: #000;
+}
+
+/* Slides */
+.hero-farms__slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-farms__slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.hero-farms__slide.is-active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Content */
+.hero-farms__content {
+  position: relative;
+  z-index: 2;
+  max-width: 50%;
+  padding-top: 140px;
+  margin-left: 135px;
+  margin-right: 0;
+}
+
+
+.hero-farms__eyebrow {
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+  margin-bottom: 12px;
+}
+
+.hero-farms__heading {
+  color: #fff;
+  font-size: clamp(42px, 6vw, 78px);
+  font-weight: 300;
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* Controls Wrapper */
+.hero-farms__controls {
+  position: absolute;
+  bottom: 48px;
+  left: 135px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  z-index: 5;
+}
+
+/* Thumbnail Button */
+.hero-farms__thumb {
+  position: relative;
+  width: 93px;
+  height: 93px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.hero-farms__thumb::after {
+  content: '';
+  position: absolute;
+
+  /* 22px gap */
+  inset: -22px;
+
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  pointer-events: none;
+}
+
+
+.hero-farms__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Next label */
+.hero-farms__thumb-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+  z-index: 2;
+  pointer-events: none;
+}
+
+
+/* Progress ring (animated) */
+.hero-farms__progress {
+  position: absolute;
+
+  /* SAME geometry as path */
+  inset: -22px;
+
+  border-radius: 2px;
+
+  /* THICK progress stroke */
+  border: 8px solid transparent;
+
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.hero-farms__progress.is-animating {
+  animation-name: hero-farms-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+
+
+.hero-farms__progress.is-animating {
+  animation-name: hero-farms-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+/* Progress animation – goes around thumbnail */
+@keyframes hero-farms-progress {
+  0% {
+    border-top-color: #fff;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+  }
+  25% {
+    border-top-color: #fff;
+    border-right-color: #fff;
+  }
+  50% {
+    border-bottom-color: #fff;
+  }
+  75% {
+    border-left-color: #fff;
+  }
+  100% {
+    border-color: #fff;
+  }
+}
+
+
+/* Counter */
+.hero-farms__counter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+}
+
+.hero-farms__line {
+  width: 64px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 749px) {
+  .hero-farms__content {
+    max-width: 100%;
+    padding-top: 120px;
+  }
+
+  .hero-farms__controls {
+    left: 24px;
+    bottom: 24px;
+  }
+
+  .hero-farms__thumb {
+    width: 96px;
+    height: 96px;
+  }
+
+  .hero-farms__heading {
+    font-size: 36px;
+  }
+}

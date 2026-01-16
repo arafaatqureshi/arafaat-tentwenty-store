@@ -1,0 +1,65 @@
+{{ 'hero-farms.css' | asset_url | stylesheet_tag }}
+
+<hero-farms class="hero-farms" data-autoplay="5000">
+  <div class="hero-farms__slides">
+    {% for block in section.blocks %}
+      <article
+        class="hero-farms__slide{% if forloop.first %} is-active{% endif %}"
+        data-hero-slide
+        data-index="{{ forloop.index0 }}"
+        data-image="{{ block.settings.image | image_url: width: 2400 }}"
+        style="background-image:url('{{ block.settings.image | image_url: width: 2400 }}')"
+      >
+        <div class="hero-farms__content">
+          <p class="hero-farms__eyebrow">
+            {{ block.settings.eyebrow }}
+          </p>
+
+          <h1 class="hero-farms__heading">
+            {{ block.settings.heading | newline_to_br }}
+          </h1>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
+  <div class="hero-farms__controls">
+    <button class="hero-farms__thumb" data-hero-next>
+      <span class="hero-farms__thumb-label">Next</span>
+      <img data-hero-thumb-image alt="">
+      <span class="hero-farms__progress">
+      <span class="hero-farms__progress-fill" data-hero-progress></span>
+    </span>
+      
+    </button>
+
+    <div class="hero-farms__counter">
+      <span data-hero-current>01</span>
+      <span class="hero-farms__line"></span>
+      <span data-hero-total>
+        {{ section.blocks.size | prepend: '0' }}
+      </span>
+    </div>
+  </div>
+</hero-farms>
+  <script src="{{ 'hero-farms.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Hero – Farms Slider",
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Background image" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow text" },
+        { "type": "textarea", "id": "heading", "label": "Heading" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Hero – Farms Slider" }
+  ]
+}
+{% endschema %}
