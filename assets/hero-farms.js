@@ -1,87 +1,83 @@
 class HeroFarms extends HTMLElement {
   constructor() {
     super();
-    this.slides = [];
     this.current = 0;
-    this.timer = null;
-    this.startTime = null;
-    this.raf = null;
+    this.isAnimating = false;
   }
 
   connectedCallback() {
     this.slides = [...this.querySelectorAll('[data-hero-slide]')];
     this.nextBtn = this.querySelector('[data-hero-next]');
     this.thumbImg = this.querySelector('[data-hero-thumb-image]');
-    this.currentEl = this.querySelector('[data-hero-current]');
-    this.totalEl = this.querySelector('[data-hero-total]');
     this.progressEl = this.querySelector('[data-hero-progress]');
+    this.duration = Number(this.dataset.autoplay) || 5000;
 
-    this.delay = Number(this.dataset.autoplay || 5000);
+    const totalEl = this.querySelector('[data-hero-total]');
+    if (totalEl) totalEl.textContent = this.slides.length.toString().padStart(2, '0');
 
-    this.totalEl.textContent = this.format(this.slides.length);
-    this.updateThumbnail();
-    this.bind();
+    this.init();
+  }
+
+  init() {
+    this.updateUI();
     this.startAutoplay();
+    this.nextBtn?.addEventListener('click', () => !this.isAnimating && this.goToNext());
   }
 
-  bind() {
-    this.nextBtn.addEventListener('click', () => {
-      this.next();
-      this.startAutoplay();
+  goToNext() {
+    const prev = this.current;
+    this.current = (this.current + 1) % this.slides.length;
+    this.runTransition(prev, this.current);
+  }
+
+  runTransition(oldIdx, newIdx) {
+    this.isAnimating = true;
+    const container = this.querySelector('.hero-farms__slides');
+    const oldImgUrl = this.slides[oldIdx].dataset.image;
+    const overlay = document.createElement('div');
+    overlay.className = 'hero-split-layer';
+    overlay.style.backgroundImage = `url(${oldImgUrl})`;
+    container.appendChild(overlay);
+    this.slides[oldIdx].classList.remove('is-active');
+    this.slides[newIdx].classList.add('is-active');
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        overlay.classList.add('is-animating');
+      });
     });
+
+    setTimeout(() => {
+      overlay.remove();
+      this.isAnimating = false;
+      this.updateUI();
+      this.startAutoplay();
+    }, 1300);
   }
 
-  /* =====================
-     AUTOPLAY + PROGRESS
-     ===================== */
+  updateUI() {
+    const curEl = this.querySelector('[data-hero-current]');
+    if (curEl) curEl.textContent = (this.current + 1).toString().padStart(2, '0');
+    
+    const nextIdx = (this.current + 1) % this.slides.length;
+    if (this.thumbImg) this.thumbImg.src = this.slides[nextIdx].dataset.image;
+  }
+
   startAutoplay() {
-    cancelAnimationFrame(this.raf);
-    this.startTime = performance.now();
-    this.progressEl.style.transform = 'scaleX(0)';
-
+    if (this.progressRAF) cancelAnimationFrame(this.progressRAF);
+    const start = performance.now();
     const tick = (now) => {
-      const elapsed = now - this.startTime;
-      const progress = Math.min(elapsed / this.delay, 1);
-
-      this.progressEl.style.transform = `scaleX(${progress})`;
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / this.duration, 1);
+      if (this.progressEl) this.progressEl.style.strokeDashoffset = 1 - progress;
 
       if (progress < 1) {
-        this.raf = requestAnimationFrame(tick);
+        this.progressRAF = requestAnimationFrame(tick);
       } else {
-        this.next();
-        this.startAutoplay();
+        this.goToNext();
       }
     };
-
-    this.raf = requestAnimationFrame(tick);
-  }
-
-  /* =====================
-     SLIDE CHANGE
-     ===================== */
-  next() {
-    this.slides[this.current].classList.remove('is-active');
-
-    this.current = (this.current + 1) % this.slides.length;
-
-    this.slides[this.current].classList.add('is-active');
-    this.currentEl.textContent = this.format(this.current + 1);
-
-    this.updateThumbnail();
-  }
-
-  updateThumbnail() {
-    const nextIndex = (this.current + 1) % this.slides.length;
-    const nextSlide = this.slides[nextIndex];
-    const nextImage = nextSlide.dataset.image;
-
-    if (this.thumbImg && nextImage) {
-      this.thumbImg.src = nextImage;
-    }
-  }
-
-  format(num) {
-    return num < 10 ? `0${num}` : num;
+    this.progressRAF = requestAnimationFrame(tick);
   }
 }
 

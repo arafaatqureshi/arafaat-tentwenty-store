@@ -1,0 +1,62 @@
+{{ 'circular-slider.css' | asset_url | stylesheet_tag }}
+
+<section class="circular-slider" style="background-color: {{ section.settings.bg_color }};">
+  <div class="circular-slider__header">
+    <h2 class="circular-slider__title">{{ section.settings.title | escape }}</h2>
+    <div class="circular-slider__description">{{ section.settings.description }}</div>
+  </div>
+
+  <circular-slider-component class="circular-slider__viewport">
+    <div class="circular-slider__stage">
+      {% for block in section.blocks %}
+        <div class="circular-slider__item" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <div class="circular-slider__visual">
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 1200 | image_tag: class: 'circular-slider__image', loading: 'lazy' }}
+            {% else %}
+              {{ 'collection-1' | placeholder_svg_tag: 'circular-slider__placeholder' }}
+            {% endif %}
+
+            <div class="circular-slider__drag-badge" data-drag-handle>
+            Drag
+            </div>
+          </div>
+
+          <div class="circular-slider__meta">
+            {% if block.settings.sub_title != blank %}
+               <p class="circular-slider__sub">{{ block.settings.sub_title }}</p>
+            {% endif %}
+            <h3 class="circular-slider__client-name">{{ block.settings.client_name }}</h3>
+            <div class="circular-slider__location">{{ block.settings.description_text }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </circular-slider-component>
+</section>
+
+<script src="{{ 'circular-slider.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Circular Slider",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Quality Products" },
+    { "type": "richtext", "id": "description", "label": "Description", "default": "<p>Lorem ipsum dolor sit amet...</p>" },
+    { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#fffaf5" }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "sub_title", "label": "Sub-title", "default": "Started in 2017" },
+        { "type": "text", "id": "client_name", "label": "Title", "default": "Flora Delight" },
+        { "type": "text", "id": "description_text", "label": "Location/Text", "default": "Dubai, UAE" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Circular Slider", "blocks": [{ "type": "slide" }, { "type": "slide" }, { "type": "slide" }] }]
+}
+{% endschema %}

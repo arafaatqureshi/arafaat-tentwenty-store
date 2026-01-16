@@ -1,15 +1,13 @@
-/* Root */
 hero-farms {
   position: relative;
   display: block;
   height: 100vh;
   max-height: 900px;
-  overflow: hidden;
-  color: #ffffff;
   background: #000;
+  overflow: hidden;
+  color: #fff;
 }
 
-/* Slides */
 .hero-farms__slides {
   position: relative;
   width: 100%;
@@ -21,76 +19,129 @@ hero-farms {
   inset: 0;
   background-size: cover;
   background-position: center;
-  opacity: 0;
-  transition: opacity 0.9s ease;
-}
-
-.hero-farms__slide.is-active {
-  opacity: 1;
+  visibility: hidden;
   z-index: 1;
 }
 
-/* Content */
+.hero-farms__slide.is-active {
+  visibility: visible;
+  z-index: 2;
+}
+
+.hero-split-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+  z-index: 2;
+
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  transition:
+    clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1),
+    opacity 0.6s ease;
+}
+
+.hero-split-layer.is-animating {
+  clip-path: polygon(
+    50% 40%,
+    100% 0,
+    100% 100%,
+    50% 60%,
+    0 100%,
+    0 0
+  );
+  opacity: 0;
+}
+
 .hero-farms__content {
   position: relative;
   z-index: 2;
-  max-width: 50%;
-  padding-top: 140px;
-  margin-left: 135px;
-  margin-right: 0;
+  padding: 15% 0 0 135px;
 }
 
-
 .hero-farms__eyebrow {
-  font-size: 14px;
-  letter-spacing: 0.12em;
-  opacity: 0.75;
-  margin-bottom: 12px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
 }
 
 .hero-farms__heading {
-  color: #fff;
-  font-size: clamp(42px, 6vw, 78px);
-  font-weight: 300;
-  line-height: 1.1;
   margin: 0;
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 100%;
+  color: #fff;
 }
 
-/* Controls Wrapper */
 .hero-farms__controls {
   position: absolute;
-  bottom: 48px;
+  bottom: 50px;
   left: 135px;
+  z-index: 2;
+
   display: flex;
   align-items: center;
-  gap: 32px;
-  z-index: 5;
+  gap: 40px;
 }
 
-/* Thumbnail Button */
+.hero-farms__counter {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+.hero-farms__line {
+  width: 60px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
 .hero-farms__thumb {
   position: relative;
-  width: 93px;
-  height: 93px;
-  background: none;
-  border: none;
+  width: 130px;
+  height: 130px;
   padding: 0;
+  border: none;
+  background: none;
   cursor: pointer;
 }
 
-.hero-farms__thumb::after {
-  content: '';
+.hero-farms__progress {
   position: absolute;
-
-  /* 22px gap */
-  inset: -22px;
-
-  border-radius: 2px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-
+  inset: 0;
   pointer-events: none;
+  z-index: 1;
 }
 
+.hero-farms__progress svg {
+  width: 130px;
+  height: 130px;
+  display: block;
+}
+
+[data-hero-progress] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: none;
+}
+
+.hero-farms__thumb-img-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 95px;
+  height: 95px;
+
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  border-radius: 2px;
+  z-index: 2;
+}
 
 .hero-farms__thumb img {
   width: 100%;
@@ -99,109 +150,70 @@ hero-farms {
   display: block;
 }
 
-/* Next label */
 .hero-farms__thumb-label {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  letter-spacing: 0.08em;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  font-size: 16px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  color: #ffffff;
-  z-index: 2;
+  color: #fff;
   pointer-events: none;
 }
 
-
-/* Progress ring (animated) */
-.hero-farms__progress {
-  position: absolute;
-
-  /* SAME geometry as path */
-  inset: -22px;
-
-  border-radius: 2px;
-
-  /* THICK progress stroke */
-  border: 8px solid transparent;
-
-  pointer-events: none;
-  box-sizing: border-box;
-}
-
-.hero-farms__progress.is-animating {
-  animation-name: hero-farms-progress;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-
-
-
-.hero-farms__progress.is-animating {
-  animation-name: hero-farms-progress;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-
-/* Progress animation – goes around thumbnail */
-@keyframes hero-farms-progress {
-  0% {
-    border-top-color: #fff;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
-    border-left-color: transparent;
+@media (max-width: 768px) {
+  hero-farms {
+    height: 80vh;
+    max-height: none;
   }
-  25% {
-    border-top-color: #fff;
-    border-right-color: #fff;
-  }
-  50% {
-    border-bottom-color: #fff;
-  }
-  75% {
-    border-left-color: #fff;
-  }
-  100% {
-    border-color: #fff;
-  }
-}
 
-
-/* Counter */
-.hero-farms__counter {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-  letter-spacing: 0.1em;
-}
-
-.hero-farms__line {
-  width: 64px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.6);
-}
-
-/* Responsive */
-@media (max-width: 749px) {
   .hero-farms__content {
-    max-width: 100%;
-    padding-top: 120px;
-  }
-
-  .hero-farms__controls {
-    left: 24px;
-    bottom: 24px;
-  }
-
-  .hero-farms__thumb {
-    width: 96px;
-    height: 96px;
+    padding: 260px 20px 0 20px;
   }
 
   .hero-farms__heading {
-    font-size: 36px;
+    font-size: 46px;
+  }
+
+  .hero-farms__eyebrow {
+    font-size: 14px;
+  }
+
+  .hero-farms__controls {
+    bottom: 20px;
+    left: 20px;
+    gap: 20px;
+  }
+
+  .hero-farms__counter {
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .hero-farms__line {
+    width: 40px;
+    height: 1px;
+  }
+
+  .hero-farms__thumb {
+    width: 80px;
+    height: 80px;
+  }
+
+  .hero-farms__progress svg {
+    width: 80px;
+    height: 80px;
+  }
+
+  .hero-farms__thumb-img-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .hero-farms__thumb-label {
+    font-size: 12px;
   }
 }
+

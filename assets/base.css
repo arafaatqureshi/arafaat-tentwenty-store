@@ -2546,6 +2546,21 @@ input[type='checkbox'] {
   line-height: 1;
 }
 
+@media screen and (max-width: 750px) {
+  .header__contact-button {
+    width: 163px;
+    height: 36px;
+  }
+  .header {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0px;
+    padding: 21px 0px 24px 27.6px ;
+  }
+}
+
 .header__icons .shopify-app-block {
   max-width: 4.4rem;
   max-height: 4.4rem;

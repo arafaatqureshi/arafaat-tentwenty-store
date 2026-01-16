@@ -6,18 +6,12 @@
       <article
         class="hero-farms__slide{% if forloop.first %} is-active{% endif %}"
         data-hero-slide
-        data-index="{{ forloop.index0 }}"
         data-image="{{ block.settings.image | image_url: width: 2400 }}"
         style="background-image:url('{{ block.settings.image | image_url: width: 2400 }}')"
       >
         <div class="hero-farms__content">
-          <p class="hero-farms__eyebrow">
-            {{ block.settings.eyebrow }}
-          </p>
-
-          <h1 class="hero-farms__heading">
-            {{ block.settings.heading | newline_to_br }}
-          </h1>
+          <p class="hero-farms__eyebrow">{{ block.settings.eyebrow }}</p>
+          <h1 class="hero-farms__heading">{{ block.settings.heading | newline_to_br }}</h1>
         </div>
       </article>
     {% endfor %}
@@ -26,24 +20,46 @@
   <div class="hero-farms__controls">
     <button class="hero-farms__thumb" data-hero-next>
       <span class="hero-farms__thumb-label">Next</span>
-      <img data-hero-thumb-image alt="">
+      <div class="hero-farms__thumb-img-wrapper">
+         <img data-hero-thumb-image src="" alt="">
+      </div>
       <span class="hero-farms__progress">
-      <span class="hero-farms__progress-fill" data-hero-progress></span>
-    </span>
-      
+        <svg viewBox="0 0 100 100">
+        <rect
+          x="5"
+          y="5"
+          width="90"
+          height="90"
+          fill="none"
+          stroke="rgba(255,255,255,0.25)"
+          stroke-width="1"
+        />
+
+        <rect
+          x="5"
+          y="5"
+          width="90"
+          height="90"
+          fill="none"
+          stroke="#fff"
+          stroke-width="8"
+          pathLength="1"
+          data-hero-progress
+        />
+
+        </svg>
+      </span>
     </button>
 
     <div class="hero-farms__counter">
       <span data-hero-current>01</span>
       <span class="hero-farms__line"></span>
-      <span data-hero-total>
-        {{ section.blocks.size | prepend: '0' }}
-      </span>
+      <span data-hero-total>{{ section.blocks.size | prepend: '0' }}</span>
     </div>
   </div>
 </hero-farms>
-  <script src="{{ 'hero-farms.js' | asset_url }}" defer="defer"></script>
 
+<script src="{{ 'hero-farms.js' | asset_url }}" defer="defer"></script>
 {% schema %}
 {
   "name": "Hero – Farms Slider",
