@@ -127,11 +127,53 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "collection_list_aXeJHm": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_XWCjiA": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "organic"
+          }
+        },
+        "featured_collection_qCnL8E": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "frontpage"
+          }
+        },
+        "featured_collection_rH8UMz": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "all"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_XWCjiA",
+        "featured_collection_qCnL8E",
+        "featured_collection_rH8UMz"
+      ],
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "Collections",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "",
+        "show_view_all": false,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
     "hero_farms_83tP8W",
     "circular_slider_f73jfW",
-    "featured_collection_aqhcQ6"
+    "featured_collection_aqhcQ6",
+    "collection_list_aXeJHm"
   ]
 }
